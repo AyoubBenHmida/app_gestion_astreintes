@@ -4,6 +4,7 @@ using gestion_astreintes.Repositories.Interfaces;
 using gestion_astreintes.Services.Implementation;
 using gestion_astreintes.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,7 +17,11 @@ builder.Services.AddTransient<ITeamMemberRepository, TeamMemberRepository>();
 
 builder.Services.AddTransient<ITeamMemberService, TeamMemberService>();
 
-builder.Services.AddControllers();
+builder.Services.AddTransient<IAstreinteRepository, AstreinteRepository>();
+
+builder.Services.AddTransient<IAstreinteService, AstreinteService>();
+
+builder.Services.AddControllers().AddNewtonsoftJson();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

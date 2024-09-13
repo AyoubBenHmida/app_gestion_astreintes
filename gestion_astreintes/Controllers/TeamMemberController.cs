@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace gestion_astreintes.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class TeamMemberController : ControllerBase
     {
@@ -35,7 +35,21 @@ namespace gestion_astreintes.Controllers
         [HttpGet("{id}")]
         public ActionResult<TeamMemberDto> GetTeamMemberById(int id)
         {
-            return Ok(_teamMemberService.GetTeamMemberByID(id));
+            try
+            {
+                return Ok(_teamMemberService.GetTeamMemberByID(id));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            
+        }
+
+        [HttpGet("{id}/astreintes")]
+        public ActionResult<EmpAstreintesDto> GetAstreintesByEmployeeId(int id)
+        {
+            return Ok(_teamMemberService.GetAstreintesByEmployeeId(id));
         }
 
         [HttpPost]
@@ -78,7 +92,6 @@ namespace gestion_astreintes.Controllers
             {
                 return BadRequest(ex.Message);
             }
-
         }
 
     }

@@ -13,6 +13,8 @@ namespace gestion_astreintes.Data
         public DbSet<Team> Teams { get; set; }
         public DbSet<TeamMember> TeamMembers { get; set; }
         public DbSet<TeamMemberType> TeamMembersMemberTypes { get; set;}
+        public DbSet<Astreinte> Astreintes { get; set; }
+        public DbSet<StatutAstreinte> Statuts { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -21,7 +23,13 @@ namespace gestion_astreintes.Data
                 new TeamMemberType { Id = 2, Name = "Employee" }
                 );
 
-            
+            modelBuilder.Entity<StatutAstreinte>().HasData(
+                new StatutAstreinte { Id = 1, Name = "Nouveau" },
+                new StatutAstreinte { Id = 2, Name = "Validée" },
+                new StatutAstreinte { Id = 3, Name = "Rejetée" },
+                new StatutAstreinte { Id = 4, Name = "En Cours" }
+                );
+
             base.OnModelCreating(modelBuilder);
         }
     }

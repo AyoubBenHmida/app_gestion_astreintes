@@ -7,6 +7,7 @@ namespace gestion_astreintes.Services.Interfaces
     {
         IEnumerable<TeamMemberDto> GetTeamMembers();
         TeamMemberDto GetTeamMemberByID(int TeamMemberId);
+        EmpAstreintesDto GetAstreintesByEmployeeId(int EmployeeId);
         TeamMemberDto AddTeamMember(TeamMemberForCreationDto teamMemberForCreDto);
         void EditTeamMember(TeamMemberForEditDto teamMemberForEdit);
         void DeleteTeamMember(int TeamMemberId);

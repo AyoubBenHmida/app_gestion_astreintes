@@ -16,7 +16,7 @@ namespace gestion_astreintes.Repositories.Implementation
 
         public TeamMember GetTeamMemberByID(int id)
         {
-            return context.TeamMembers.Include(t => t.MemberType).Include(t => t.Team).FirstOrDefault(t => t.Id == id);
+            return context.TeamMembers.Include(t => t.MemberType).Include(t => t.Team).Include(t => t.astreintes).ThenInclude(t => t.Statut).FirstOrDefault(t => t.Id == id);
         }
 
         public IEnumerable<TeamMember> GetTeamMembers()

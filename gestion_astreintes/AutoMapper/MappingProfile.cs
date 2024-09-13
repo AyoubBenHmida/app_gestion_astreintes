@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using gestion_astreintes.AutoMapper.Converters;
 using gestion_astreintes.Dtos;
 using gestion_astreintes.Models;
 
@@ -31,9 +32,31 @@ namespace gestion_astreintes.AutoMapper
             .ForMember(dest => dest.Team,
                opt => opt.MapFrom(src => new Team { Id = src.teamId }));
 
-            CreateMap<Team, TeamDetailsDto>();
+            CreateMap<Team, TeamDetailsDto>()
+                .ConvertUsing<TeamToTeamDetailsDtoConverter>();
 
             CreateMap<TeamMember, TeamMemberForTeamDetailsDto>();
+
+            CreateMap<Astreinte, AstreinteDto>();
+
+            CreateMap<AstreinteDto, Astreinte>()
+            .ForMember(dest => dest.Statut,
+               opt => opt.MapFrom(src => new StatutAstreinte { Id = src.StatutId , Name = src.StatutName }));
+
+            CreateMap<AstreinteForCreationDto, Astreinte>()
+            .ForMember(dest => dest.Employee,
+               opt => opt.MapFrom(src => new TeamMember { Id = src.EmployeeId }));
+
+
+            CreateMap<AstreinteForEditDto, Astreinte>();
+
+            CreateMap<TeamMember, EmpAstreintesDto>()
+                .ConvertUsing<TeamMemberToEmpAstreintesDtoConverter>();
+
+            CreateMap<Astreinte, AstreinteForEmployeeDetailsDto>()
+                .ForMember(dest => dest.StatutId ,
+                    opt => opt.MapFrom(src => src.Statut.Id)
+                );
 
         }
     }

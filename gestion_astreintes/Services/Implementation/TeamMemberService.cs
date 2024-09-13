@@ -30,8 +30,22 @@ namespace gestion_astreintes.Services.Implementation
         public TeamMemberDto GetTeamMemberByID(int TeamMemberId)
         {
             TeamMember teamMember = _teamMemberrepository.GetTeamMemberByID(TeamMemberId);
-            TeamMemberDto teamMemberDto = _mapper.Map<TeamMember, TeamMemberDto>(teamMember);
-            return teamMemberDto;
+            if (teamMember == null)
+            {
+                throw new EntityNotFoundException($"could not find entity with id {TeamMemberId}"); 
+            }
+            else
+            {
+                TeamMemberDto teamMemberDto = _mapper.Map<TeamMember, TeamMemberDto>(teamMember);
+                return teamMemberDto;
+            }
+        }
+
+        public EmpAstreintesDto GetAstreintesByEmployeeId(int EmployeeId)
+        {
+            TeamMember Employee = _teamMemberrepository.GetTeamMemberByID(EmployeeId);
+            EmpAstreintesDto empAstreintes = _mapper.Map<TeamMember , EmpAstreintesDto>(Employee);
+            return empAstreintes;
         }
 
         public TeamMemberDto AddTeamMember(TeamMemberForCreationDto teamMemberForCreDto)

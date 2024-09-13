@@ -20,24 +20,27 @@ namespace gestion_astreintes.Services.Implementation
         }
         public IEnumerable<TeamDto> GetTeams() { 
         
-            List<Team> teams = _teamRepository.GetTeams().ToList() ;
-            return teams.Select(t => _mapper.Map<Team , TeamDto>(t))   ;
+            List<Team> teams = _teamRepository.GetTeams().ToList();
+            return teams.Select(t => _mapper.Map<Team , TeamDto>(t));
         }
         public TeamDto GetTeamByID(int TeamId)
         {
             Team team = _teamRepository.GetTeamByID(TeamId);
-            TeamDto teamDto = _mapper.Map<Team, TeamDto>(team);
-            return teamDto ;
+            if (team == null)
+            {
+                throw new EntityNotFoundException($"could not find Entity with id {TeamId}");
+            }
+            else
+            {
+                TeamDto teamDto = _mapper.Map<Team, TeamDto>(team);
+                return teamDto;
+            }
         }
 
         public TeamDetailsDto GetTeamDetailsById(int TeamId)
         {
             Team team = _teamRepository.GetTeamDetailsById(TeamId);
-            TeamMemberForTeamDetailsDto teamLeader = _mapper
-                .Map<TeamMemberForTeamDetailsDto>(team.Members.FirstOrDefault(t => t.MemberType.Id == 1));
             TeamDetailsDto teamDetails = _mapper.Map<Team , TeamDetailsDto>(team);
-            teamDetails.TeamLeader = teamLeader;
-            teamDetails.Employees = _mapper.Map<List<TeamMemberForTeamDetailsDto>>(team.Members.Where(t => t.MemberType.Id == 2)) ;
             return teamDetails; 
         }
         public TeamDto AddTeam(TeamForCreationDto teamForCreDto) {
@@ -51,7 +54,7 @@ namespace gestion_astreintes.Services.Implementation
             teamDto.Id = id; 
             return teamDto ;
             } 
-        
+
 
         public void EditTeam(TeamDto teamDto) {
             if (_teamRepository.GetTeamByID(teamDto.Id) != null)
@@ -75,7 +78,7 @@ namespace gestion_astreintes.Services.Implementation
             }
             else
             {
-                throw new TeamContainsMembers("This team contains members, you can't add it");
+                throw new TeamContainsMembers("This team contains members, you can't delete it");
             }
             
             

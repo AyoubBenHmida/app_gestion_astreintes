@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace gestion_astreintes.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class TeamController : ControllerBase
     {
@@ -32,7 +32,14 @@ namespace gestion_astreintes.Controllers
 
         [HttpGet("{id}")]
         public ActionResult<TeamDto> GetTeamById(int id) {
-            return Ok(_teamService.GetTeamByID(id));
+            try
+            {
+                return Ok(_teamService.GetTeamByID(id));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpGet("{id}/details")]

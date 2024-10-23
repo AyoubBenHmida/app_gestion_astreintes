@@ -1,16 +1,18 @@
 ﻿using gestion_astreintes.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 
 namespace gestion_astreintes.Data
 {
-    public class DataContext : DbContext
+    public class DataContext : IdentityDbContext<ApplicationUser>
     {
         public DataContext(DbContextOptions<DataContext> options) : base(options) 
         { 
 
         }
-        public DbSet<Team> Teams { get; set; }
+        public DbSet<Team> Teams { get; set; } 
         public DbSet<TeamMember> TeamMembers { get; set; }
         public DbSet<TeamMemberType> TeamMembersMemberTypes { get; set;}
         public DbSet<Astreinte> Astreintes { get; set; }

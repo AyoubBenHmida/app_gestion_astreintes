@@ -17,7 +17,7 @@ namespace gestion_astreintes.Controllers
     public class TeamController : ControllerBase
     {
         private ITeamService _teamService;
-       
+        
         public TeamController(ITeamService teamService )
         {
             this._teamService = teamService;
@@ -88,6 +88,7 @@ namespace gestion_astreintes.Controllers
             
         }
         
+
 
     }
 }

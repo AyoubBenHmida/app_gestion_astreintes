@@ -68,7 +68,10 @@ namespace gestion_astreintes.Services.Implementation
                 _teamRepository.EditTeam(team);
                 
             }
-            throw new TeamIdExistsException("this team don't exists");
+            else
+            {
+                throw new TeamIdExistsException("this team don't exists");
+            }
         }
         public void DeleteTeam(int TeamId)
         {

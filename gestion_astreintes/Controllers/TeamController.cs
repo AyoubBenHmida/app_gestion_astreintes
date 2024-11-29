@@ -6,6 +6,7 @@ using gestion_astreintes.Models;
 using gestion_astreintes.Repositories.Implementation;
 using gestion_astreintes.Services.Implementation;
 using gestion_astreintes.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -23,13 +24,15 @@ namespace gestion_astreintes.Controllers
             this._teamService = teamService;
             
         }
-        
-        [HttpGet]
+
+        [Authorize(Policy = "AdminOnly")]
+        [HttpGet("protected")]
         public ActionResult<IEnumerable<TeamDto>> GetTeams()
         {
             return Ok(_teamService.GetTeams());
     }
 
+        [Authorize(Policy = "AdminOnly")]
         [HttpGet("{id}")]
         public ActionResult<TeamDto> GetTeamById(int id) {
             try
@@ -42,12 +45,14 @@ namespace gestion_astreintes.Controllers
             }
         }
 
+        [Authorize(Policy = "AdminOnly")]
         [HttpGet("{id}/details")]
         public ActionResult<TeamDetailsDto> GetTeamDetailsById(int id)
         {
             return Ok(_teamService.GetTeamDetailsById(id));
         }
 
+        [Authorize(Policy = "AdminOnly")]
         [HttpPost] 
         public IActionResult AddTeam([FromBody] TeamForCreationDto teamForCreDto )
         {
@@ -62,6 +67,7 @@ namespace gestion_astreintes.Controllers
             }
         }
 
+        [Authorize(Policy = "AdminOnly")]
         [HttpPut]
         public IActionResult EditTeam([FromBody] TeamDto teamDto ) {
             try
@@ -74,6 +80,7 @@ namespace gestion_astreintes.Controllers
             }
         }
 
+        [Authorize(Policy = "AdminOnly")]
         [HttpDelete("{id}")]
         public IActionResult DeleteTeam(int id) {
             try

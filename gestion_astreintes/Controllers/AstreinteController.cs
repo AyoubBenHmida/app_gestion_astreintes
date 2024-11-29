@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.JsonPatch;
+using Microsoft.AspNetCore.Authorization;
 
 namespace gestion_astreintes.Controllers
 {
@@ -26,12 +27,14 @@ namespace gestion_astreintes.Controllers
 
         }
 
+        [Authorize(Policy = "TeamLeaderOnly")]
         [HttpGet]
         public ActionResult<IEnumerable<AstreinteDto>> GetAstreintes()
         {
             return Ok(_astreinteService.GetAstreintes());
         }
 
+        [Authorize(Policy = "TeamLeaderOnly")]
         [HttpGet("{id}")]
         public ActionResult<AstreinteDto> GetAstreinteById(int id)
         {
@@ -45,6 +48,7 @@ namespace gestion_astreintes.Controllers
             }
         }
 
+        [Authorize(Policy = "EmployeeOnly")]
         [HttpPost]
         public IActionResult AddAstreinte([FromBody] AstreinteForCreationDto astreinteForCreDto)
         {
@@ -59,6 +63,7 @@ namespace gestion_astreintes.Controllers
             }
         }
 
+        [Authorize(Policy = "EmployeeOnly")]
         [HttpPut]
         public IActionResult EditAstreinte([FromBody] AstreinteForEditDto astreinteForEdit)
         {
@@ -73,8 +78,9 @@ namespace gestion_astreintes.Controllers
             }
         }
 
+        [Authorize(Policy = "EmployeeOnly")]
         [HttpDelete("{id}")]
-        public IActionResult DeleteTeamMember(int id)
+        public IActionResult DeleteAstreinte(int id)
         {
             try
             {
@@ -87,6 +93,7 @@ namespace gestion_astreintes.Controllers
             }
         }
 
+        [Authorize(Policy = "TeamLeaderOnly")]
         [HttpPatch("{id}")]
         public IActionResult ChangeAstreinteStatus(int id, [FromBody] JsonPatchDocument<AstreinteDto> patchDoc)
         {

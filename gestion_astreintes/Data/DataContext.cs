@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace gestion_astreintes.Data
 {
-    public class DataContext : IdentityDbContext<ApplicationUser>
+    public class DataContext : IdentityDbContext<ApplicationUser, IdentityRole, string>
     {
         public DataContext(DbContextOptions<DataContext> options) : base(options) 
         { 

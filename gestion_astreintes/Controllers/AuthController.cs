@@ -33,17 +33,17 @@ namespace gestion_astreintes.Controllers
             if (!ModelState.IsValid)
                 return BadRequest("Invalid login data.");
 
-            // Find the user by email
+            // Trouver l'utilisateur par email
             var user = await _userManager.FindByEmailAsync(model.Email);
             if (user == null)
                 return Unauthorized("Invalid email or password.");
 
-            // Check if the password is correct
+            // Vérifier le mot de passe
             var result = await _signInManager.PasswordSignInAsync(user, model.Password, false, false);
             if (!result.Succeeded)
                 return Unauthorized("Invalid email or password.");
 
-            // Generate the JWT token
+            // Générer le JWT avec les rôles
             var token = await GenerateJwtToken(user);
 
             return Ok(new { token });
@@ -51,6 +51,10 @@ namespace gestion_astreintes.Controllers
 
         private async Task<string> GenerateJwtToken(ApplicationUser user)
         {
+            // Récupérer les rôles de l'utilisateur
+            var roles = await _userManager.GetRolesAsync(user);
+
+            // Liste des claims
             var claims = new List<Claim>
         {
             new Claim(JwtRegisteredClaimNames.Sub, user.UserName),
@@ -60,14 +64,19 @@ namespace gestion_astreintes.Controllers
             new Claim(ClaimTypes.Email, user.Email)
         };
 
+            // Ajouter chaque rôle de l'utilisateur aux claims
+            claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));
+
+            // Clé secrète pour signer le token
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:SecretKey"]));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
+            // Générer le token JWT
             var token = new JwtSecurityToken(
                 issuer: _configuration["Jwt:Issuer"],
                 audience: _configuration["Jwt:Audience"],
                 claims: claims,
-                expires: DateTime.Now.AddDays(1),
+                expires: DateTime.UtcNow.AddDays(1),
                 signingCredentials: creds
             );
 

@@ -6,6 +6,7 @@ using gestion_astreintes.Models;
 using gestion_astreintes.Repositories.Implementation;
 using gestion_astreintes.Services.Implementation;
 using gestion_astreintes.Services.Interfaces;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -13,6 +14,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace gestion_astreintes.Controllers
 {
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [Route("api/[controller]/[action]")]
     [ApiController]
     public class TeamController : ControllerBase
